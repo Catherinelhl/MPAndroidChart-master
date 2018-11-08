@@ -2,6 +2,7 @@ package com.xxmassdeveloper.mpchartexample;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -92,8 +93,6 @@ public class BCAASCChartActivity extends DemoBase {
 
         data.setData(generateLineData());
         data.setData(generateBarData());
-        data.setData(generateBubbleData());
-        data.setData(generateScatterData());
         data.setData(generateCandleData());
         data.setValueTypeface(tfLight);
 
@@ -168,26 +167,29 @@ public class BCAASCChartActivity extends DemoBase {
         return d;
     }
 
-    private ScatterData generateScatterData() {
-
-        ScatterData d = new ScatterData();
-
-        ArrayList<Entry> entries = new ArrayList<>();
-
-        for (float index = 0; index < count; index += 0.5f)
-            entries.add(new Entry(index + 0.25f, getRandom(10, 55)));
-
-        ScatterDataSet set = new ScatterDataSet(entries, "Scatter DataSet");
-        set.setColors(ColorTemplate.MATERIAL_COLORS);
-        set.setScatterShapeSize(7.5f);
-        set.setDrawValues(false);
-        set.setValueTextSize(10f);
-        d.addDataSet(set);
-
-        return d;
-    }
-
     private CandleData generateCandleData() {
+
+//        CandleDataSet set1 = new CandleDataSet(values, "Data Set");
+//
+//        set1.setDrawIcons(false);
+//        set1.setAxisDependency(YAxis.AxisDependency.LEFT);
+////        set1.setColor(Color.rgb(80, 80, 80));
+//        set1.setShadowColor(Color.DKGRAY);
+//        set1.setShadowWidth(0.7f);
+//        set1.setDecreasingColor(Color.RED);
+//        set1.setDecreasingPaintStyle(Paint.Style.FILL);
+//        set1.setIncreasingColor(Color.rgb(122, 242, 84));
+//        set1.setIncreasingPaintStyle(Paint.Style.STROKE);
+//        set1.setNeutralColor(Color.BLUE);
+//        //set1.setHighlightLineWidth(1f);
+//
+//        CandleData data = new CandleData(set1);
+//
+//        chart.setData(data);
+//        chart.invalidate();
+
+
+
 
         CandleData d = new CandleData();
 
@@ -197,37 +199,23 @@ public class BCAASCChartActivity extends DemoBase {
             entries.add(new CandleEntry(index + 1f, 90, 70, 85, 75f));
 
         CandleDataSet set = new CandleDataSet(entries, "Candle DataSet");
-        set.setDecreasingColor(Color.rgb(142, 150, 175));
+//        set.setDecreasingColor(Color.rgb(142, 150, 175));
+//        set.setShadowColor(Color.DKGRAY);
+//        set.setBarSpace(0.3f);
+//        set.setValueTextSize(10f);
+//        set.setDrawValues(false);
+        set.setDrawIcons(false);
+        set.setAxisDependency(YAxis.AxisDependency.LEFT);
         set.setShadowColor(Color.DKGRAY);
-        set.setBarSpace(0.3f);
-        set.setValueTextSize(10f);
-        set.setDrawValues(false);
+        set.setShadowWidth(0.7f);
+        set.setDecreasingColor(Color.RED);
+        set.setDecreasingPaintStyle(Paint.Style.FILL);
+        set.setIncreasingColor(Color.rgb(122, 242, 84));
+        set.setIncreasingPaintStyle(Paint.Style.STROKE);
+        set.setNeutralColor(Color.BLUE);
         d.addDataSet(set);
 
         return d;
-    }
-
-    private BubbleData generateBubbleData() {
-
-        BubbleData bd = new BubbleData();
-
-        ArrayList<BubbleEntry> entries = new ArrayList<>();
-
-        for (int index = 0; index < count; index++) {
-            float y = getRandom(10, 105);
-            float size = getRandom(100, 105);
-            entries.add(new BubbleEntry(index + 0.5f, y, size));
-        }
-
-        BubbleDataSet set = new BubbleDataSet(entries, "Bubble DataSet");
-        set.setColors(ColorTemplate.VORDIPLOM_COLORS);
-        set.setValueTextSize(10f);
-        set.setValueTextColor(Color.WHITE);
-        set.setHighlightCircleWidth(1.5f);
-        set.setDrawValues(true);
-        bd.addDataSet(set);
-
-        return bd;
     }
 
     @Override
