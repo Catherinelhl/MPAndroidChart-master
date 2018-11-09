@@ -188,7 +188,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
             gradientColors.add(new GradientColor(startColor4, endColor4));
             gradientColors.add(new GradientColor(startColor5, endColor5));
 
-            set1.setGradientColors(gradientColors);
+            set1.setGradientColors(gradientColors );
 
             ArrayList<IBarDataSet> dataSets = new ArrayList<>();
             dataSets.add(set1);

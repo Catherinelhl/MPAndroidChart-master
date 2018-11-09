@@ -180,10 +180,9 @@ public class BCAASCChartActivity extends DemoBase {
 
         for (int index = 0; index < count; index++) {
             float a = getRandom(2, 1);
-//            System.out.println("this random is:" + a);
-            entries1.add(new BarEntry(0, a));
+            entries1.add(new BarEntry(index+0.3f, a));
             // stacked
-            entries2.add(new BarEntry(0, new float[]{getRandom(1, 1), getRandom(1, 1)}));
+            entries2.add(new BarEntry(index, new float[]{getRandom(1, 1), getRandom(1, 1)}));
         }
 
         BarDataSet set1 = new BarDataSet(entries1, "Bar 1");
@@ -204,11 +203,12 @@ public class BCAASCChartActivity extends DemoBase {
         float barWidth = 0.45f; // x2 dataset
         // (0.45 + 0.02) * 2 + 0.06 = 1.00 -> interval per "group"
 
-        BarData d = new BarData(set1, set2);
+        BarData d = new BarData();
         d.setBarWidth(barWidth);
+        d.addDataSet(set1);
 
         // make this BarData object grouped
-        d.groupBars(0, groupSpace, barSpace); // start at x = 0
+//        d.groupBars(0, groupSpace, barSpace); // start at x = 0
 
         return d;
     }
@@ -252,7 +252,7 @@ public class BCAASCChartActivity extends DemoBase {
 //            System.out.println("val+openingPrice:" + isFall + openingPrice);
 //            System.out.println("val+closingPrice:" + isFall + closingPrice);
             // getResources().getDrawable(R.drawable.star
-            entries.add(new CandleEntry(index + 0.5f, maxOfTime, minOfTime, openingPrice, closingPrice));
+            entries.add(new CandleEntry(index + 0.4f, maxOfTime, minOfTime, openingPrice, closingPrice));
         }
         CandleDataSet set = new CandleDataSet(entries, "Candle");
         //设置是否显示文字
