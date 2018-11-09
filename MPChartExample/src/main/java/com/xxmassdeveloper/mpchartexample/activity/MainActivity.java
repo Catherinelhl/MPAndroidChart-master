@@ -8,11 +8,12 @@ import android.view.WindowManager;
 
 import com.github.mikephil.charting.utils.Utils;
 import com.xxmassdeveloper.mpchartexample.BCAASCChartActivity;
+import com.xxmassdeveloper.mpchartexample.BCAASCMultiChartActivity;
 import com.xxmassdeveloper.mpchartexample.R;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,11 +24,19 @@ public class MainActivity extends AppCompatActivity{
         setTitle("MPAndroidChart Example");
         // initialize the utilities
         Utils.init(this);
-        findViewById(R.id.btn_self).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_single).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this, BCAASCChartActivity.class);
+                startActivity(intent);
+            }
+        });
+        findViewById(R.id.btn_multiple).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, BCAASCMultiChartActivity.class);
                 startActivity(intent);
             }
         });

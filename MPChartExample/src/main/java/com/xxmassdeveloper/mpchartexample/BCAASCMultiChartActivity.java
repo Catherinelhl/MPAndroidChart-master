@@ -18,9 +18,6 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.BubbleData;
-import com.github.mikephil.charting.data.BubbleDataSet;
-import com.github.mikephil.charting.data.BubbleEntry;
 import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.data.CandleDataSet;
 import com.github.mikephil.charting.data.CandleEntry;
@@ -28,16 +25,13 @@ import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.data.ScatterData;
-import com.github.mikephil.charting.data.ScatterDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
 import java.util.ArrayList;
 
-public class BCAASCChartActivity extends DemoBase {
+public class BCAASCMultiChartActivity extends DemoBase {
 
     private CombinedChart chart;
     private final int count = 12;
@@ -106,12 +100,18 @@ public class BCAASCChartActivity extends DemoBase {
 
 
         ArrayList<Entry> entries = new ArrayList<>();
+        ArrayList<Entry> entries2 = new ArrayList<>();
+        ArrayList<Entry> entries3 = new ArrayList<>();
 
         for (int index = 0; index < count; index++) {
             //range是控制曲线度，start是起点
             float a = getRandom(5, 5);
+            float b = getRandom(4, 5);
+            float c = getRandom(3, 5);
 //            System.out.println("this random is:" + a);
-            entries.add(new Entry(index + 0.3f, a));
+            entries.add(new Entry(index, a));
+            entries2.add(new Entry(index, b));
+            entries3.add(new Entry(index, c));
         }
         LineDataSet set = new LineDataSet(entries, "Line");
         set.setColor(Color.rgb(240, 238, 70));
@@ -126,8 +126,35 @@ public class BCAASCChartActivity extends DemoBase {
 
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
 
-        LineData d = new LineData();
-        d.addDataSet(set);
+
+        LineDataSet set2 = new LineDataSet(entries2, "Line2");
+        set2.setColor(Color.rgb(100, 100, 100));
+        set2.setLineWidth(1.0f);
+        set2.setCircleColor(Color.GREEN);
+        set2.setCircleRadius(2f);
+        set2.setFillColor(Color.GREEN);
+        set2.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        set2.setDrawValues(true);
+        set2.setValueTextSize(10f);
+        set2.setValueTextColor(Color.rgb(240, 238, 70));
+
+        set2.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+
+        LineDataSet set3 = new LineDataSet(entries3, "Line3");
+        set3.setColor(Color.BLUE);
+        set3.setLineWidth(1.0f);
+        set3.setCircleColor(Color.DKGRAY);
+        set3.setCircleRadius(2f);
+        set3.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        set3.setDrawCircleHole(false);
+//        set2.setDrawValues(true);
+        set3.setValueTextSize(10f);
+        set3.setValueTextColor(Color.GREEN);
+
+        set3.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+        LineData d = new LineData(set, set2, set3);
 
         // create a data object with the data sets
         d.setValueTextColor(Color.BLACK);
@@ -143,10 +170,15 @@ public class BCAASCChartActivity extends DemoBase {
     private BarData generateBarData() {
 
         ArrayList<BarEntry> entries1 = new ArrayList<>();
+        ArrayList<BarEntry> entries2 = new ArrayList<>();
 
         for (int index = 0; index < count; index++) {
-            float a = getRandom(2, 1);
-            entries1.add(new BarEntry(index + 0.3f, a));
+            float a = getRandom(1, 1);
+            float b = getRandom(2, 1);
+            entries1.add(new BarEntry(0, a));
+            entries2.add(new BarEntry(0, b));
+            // stacked
+//            entries2.add(new BarEntry(index, new float[]{getRandom(1, 1), getRandom(1, 1)}));
         }
 
         BarDataSet set1 = new BarDataSet(entries1, "Bar 1");
@@ -155,8 +187,23 @@ public class BCAASCChartActivity extends DemoBase {
         set1.setValueTextSize(10f);
         set1.setAxisDependency(YAxis.AxisDependency.LEFT);
 
-        BarData d = new BarData();
-        d.addDataSet(set1);
+        BarDataSet set2 = new BarDataSet(entries2, "Bar 2");
+//        set2.setStackLabels(new String[]{"Stack 1", "Stack 2"});
+        set2.setColors(Color.rgb(61, 165, 255), Color.rgb(23, 197, 255));
+        set2.setValueTextColor(Color.rgb(61, 165, 255));
+        set2.setValueTextSize(10f);
+        set2.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+        float groupSpace = 0.06f;
+        float barSpace = 0.02f; // x2 dataset
+        float barWidth = 0.435f; // x2 dataset
+        // (0.45 + 0.02) * 2 + 0.06 = 1.00 -> interval per "group"
+
+        BarData d = new BarData(set1, set2);
+        d.setBarWidth(barWidth);
+
+        // make this BarData object grouped
+        d.groupBars(0, groupSpace, barSpace); // start at x = 0
 
         return d;
     }

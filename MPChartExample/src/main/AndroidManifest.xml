@@ -38,6 +38,7 @@
         <activity android:name="StackedBarActivity" />
         <activity android:name="AnotherBarActivity" />
         <activity android:name=".BCAASCChartActivity" />
+        <activity android:name=".BCAASCMultiChartActivity" />
         <activity android:name="InvertedLineChartActivity" />
         <activity android:name="CandleStickChartActivity" />
         <activity android:name="CubicLineChartActivity" />

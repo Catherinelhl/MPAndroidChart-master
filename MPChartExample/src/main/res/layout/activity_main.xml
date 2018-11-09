@@ -7,10 +7,15 @@
     android:scrollbarFadeDuration="0">
 
     <Button
-        android:id="@+id/btn_self"
+        android:id="@+id/btn_single"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SELF" />
+        android:text="SINGLE" />
+    <Button
+        android:id="@+id/btn_multiple"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="MULTIPLE" />
 
     <Button
         android:id="@+id/btn_demo"
