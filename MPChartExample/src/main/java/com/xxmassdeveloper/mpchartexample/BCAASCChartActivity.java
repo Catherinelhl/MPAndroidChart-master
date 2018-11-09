@@ -104,18 +104,26 @@ public class BCAASCChartActivity extends DemoBase {
 
     private LineData generateLineData() {
 
-        LineData d = new LineData();
 
         ArrayList<Entry> entries = new ArrayList<>();
+        ArrayList<Entry> entries2 = new ArrayList<>();
+        ArrayList<Entry> entries3 = new ArrayList<>();
 
-        for (int index = 0; index < count; index++)
-            entries.add(new Entry(index + 0.5f, getRandom(15, 5)));
-
-        LineDataSet set = new LineDataSet(entries, "Line DataSet");
+        for (int index = 0; index < count; index++) {
+            //range是控制曲线度，start是起点
+            float a = getRandom(5, 5);
+            float b = getRandom(4, 5);
+            float c = getRandom(3, 5);
+//            System.out.println("this random is:" + a);
+            entries.add(new Entry(index, a));
+            entries2.add(new Entry(index, b));
+            entries3.add(new Entry(index, c));
+        }
+        LineDataSet set = new LineDataSet(entries, "Line");
         set.setColor(Color.rgb(240, 238, 70));
         set.setLineWidth(2.5f);
         set.setCircleColor(Color.rgb(240, 238, 70));
-        set.setCircleRadius(5f);
+        set.setCircleRadius(3f);
         set.setFillColor(Color.rgb(240, 238, 70));
         set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         set.setDrawValues(true);
@@ -123,21 +131,59 @@ public class BCAASCChartActivity extends DemoBase {
         set.setValueTextColor(Color.rgb(240, 238, 70));
 
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
-        d.addDataSet(set);
 
+
+        LineDataSet set2 = new LineDataSet(entries2, "Line2");
+        set2.setColor(Color.rgb(100, 100, 100));
+        set2.setLineWidth(1.0f);
+        set2.setCircleColor(Color.GREEN);
+        set2.setCircleRadius(2f);
+        set2.setFillColor(Color.GREEN);
+        set2.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        set2.setDrawValues(true);
+        set2.setValueTextSize(10f);
+        set2.setValueTextColor(Color.rgb(240, 238, 70));
+
+        set2.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+
+        LineDataSet set3 = new LineDataSet(entries3, "Line3");
+        set3.setColor(Color.BLUE);
+        set3.setLineWidth(1.0f);
+        set3.setCircleColor(Color.DKGRAY);
+        set3.setCircleRadius(2f);
+        set3.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        set3.setDrawCircleHole(false);
+//        set2.setDrawValues(true);
+        set3.setValueTextSize(10f);
+        set3.setValueTextColor(Color.GREEN);
+
+        set3.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+        LineData d = new LineData(set, set2, set3);
+
+        // create a data object with the data sets
+        d.setValueTextColor(Color.BLACK);
+        d.setValueTextSize(11f);
         return d;
     }
 
+    /**
+     * 两个比较的
+     *
+     * @return
+     */
     private BarData generateBarData() {
 
         ArrayList<BarEntry> entries1 = new ArrayList<>();
         ArrayList<BarEntry> entries2 = new ArrayList<>();
 
         for (int index = 0; index < count; index++) {
-            entries1.add(new BarEntry(0, getRandom(25, 25)));
-
+            float a = getRandom(2, 1);
+//            System.out.println("this random is:" + a);
+            entries1.add(new BarEntry(0, a));
             // stacked
-            entries2.add(new BarEntry(0, new float[]{getRandom(13, 12), getRandom(13, 12)}));
+            entries2.add(new BarEntry(0, new float[]{getRandom(1, 1), getRandom(1, 1)}));
         }
 
         BarDataSet set1 = new BarDataSet(entries1, "Bar 1");
@@ -167,53 +213,67 @@ public class BCAASCChartActivity extends DemoBase {
         return d;
     }
 
+
+    /**
+     * K 线图
+     * @return
+     */
     private CandleData generateCandleData() {
-
-//        CandleDataSet set1 = new CandleDataSet(values, "Data Set");
-//
-//        set1.setDrawIcons(false);
-//        set1.setAxisDependency(YAxis.AxisDependency.LEFT);
-////        set1.setColor(Color.rgb(80, 80, 80));
-//        set1.setShadowColor(Color.DKGRAY);
-//        set1.setShadowWidth(0.7f);
-//        set1.setDecreasingColor(Color.RED);
-//        set1.setDecreasingPaintStyle(Paint.Style.FILL);
-//        set1.setIncreasingColor(Color.rgb(122, 242, 84));
-//        set1.setIncreasingPaintStyle(Paint.Style.STROKE);
-//        set1.setNeutralColor(Color.BLUE);
-//        //set1.setHighlightLineWidth(1f);
-//
-//        CandleData data = new CandleData(set1);
-//
-//        chart.setData(data);
-//        chart.invalidate();
-
-
-
 
         CandleData d = new CandleData();
 
         ArrayList<CandleEntry> entries = new ArrayList<>();
 
-        for (int index = 0; index < count; index += 2)
-            entries.add(new CandleEntry(index + 1f, 90, 70, 85, 75f));
+        for (int index = 0; index < count; index++) {
 
-        CandleDataSet set = new CandleDataSet(entries, "Candle DataSet");
-//        set.setDecreasingColor(Color.rgb(142, 150, 175));
-//        set.setShadowColor(Color.DKGRAY);
-//        set.setBarSpace(0.3f);
-//        set.setValueTextSize(10f);
+            float baseValue = (float) (Math.random() * 5) + 10;
+
+            float open = (float) (Math.random() * 1);//开盘的随机数
+            float close = (float) (Math.random() * 1);//收盘的随机数
+
+            //是否跌
+            boolean isFall = index % 2 == 0;
+
+            //如果当前跌了，那么就用基数+开盘随机数，否是减去开盘随机数来得到当前的开盘数
+            float openingPrice = isFall ? baseValue + open : baseValue - open;
+            //如果当前跌了，那么收盘的数据一定是小于开盘的，那么就用基数-收盘随机数，否则加上收盘随机数来得到当前的收盘数
+            float closingPrice = isFall ? baseValue - close : baseValue + close;
+
+            //如果今天是跌了，那么就会采用openingPrice 为图的top，并且表现为红色；如果今天是涨了，那么就表示为绿色
+            float maxOfTime = (isFall ? openingPrice : closingPrice) + (float) (Math.random() * 1);
+            float minOfTime = (isFall ? closingPrice : openingPrice) - (float) (Math.random() * 1);
+
+//            //基值
+//            System.out.println("val:base:" + baseValue);
+//            //时间段上升的最高值
+//            System.out.println("val:max:" + maxOfTime);
+//            //时间段下降的最高值
+//            System.out.println("val:min:" + minOfTime);
+//            System.out.println("val+openingPrice:" + isFall + openingPrice);
+//            System.out.println("val+closingPrice:" + isFall + closingPrice);
+            // getResources().getDrawable(R.drawable.star
+            entries.add(new CandleEntry(index + 0.5f, maxOfTime, minOfTime, openingPrice, closingPrice));
+        }
+        CandleDataSet set = new CandleDataSet(entries, "Candle");
+        //设置是否显示文字
 //        set.setDrawValues(false);
+        //设置candle的宽度
+//        set.setBarSpace(150f);
         set.setDrawIcons(false);
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
         set.setShadowColor(Color.DKGRAY);
-        set.setShadowWidth(0.7f);
+        set.setShadowWidth(0.3f);
+        //设置跌的颜色为Red
         set.setDecreasingColor(Color.RED);
         set.setDecreasingPaintStyle(Paint.Style.FILL);
-        set.setIncreasingColor(Color.rgb(122, 242, 84));
-        set.setIncreasingPaintStyle(Paint.Style.STROKE);
+        //设置增长的颜色为绿色
+        set.setIncreasingColor(Color.GREEN);
+        //设置增长的图形style
+        set.setIncreasingPaintStyle(Paint.Style.FILL);
         set.setNeutralColor(Color.BLUE);
         d.addDataSet(set);
+        d.setValueTextColor(Color.BLACK);
+        d.setValueTextSize(11f);
 
         return d;
     }
